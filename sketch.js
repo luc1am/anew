@@ -1,101 +1,75 @@
 
-
-//background circles
-//https://openprocessing.org/sketch/112858 
-
-
-let resolution = 260; // how many points in the circle
-let rad = 300;
-let xcir = 1;
-let ycir = 1;
-//float prevX;
-//float prevY;
-
-let t = 0; // time passed
-let tChange = .002; // how quick time flies
-
-let nVal; // noise value
-let nInt = .01; // noise intensity
-let nAmp = 0.5; // noise amplitude
-
-let filled = false;
-let text_x; 
-let text_y; 
+let video = [];
+let x = 100;
+let y = 0;
+let frame;
 
 
+
+
+function preload(){
+  video[0] = loadImage("assets/head/Layer 1.png");
+  video[1] = loadImage("assets/head/Layer 2.png");
+  video[2] = loadImage("assets/head/Layer 3.png");
+  video[3] = loadImage("assets/head/Layer 4.png");
+  video[4] = loadImage("assets/head/Layer 5.png");
+  video[5] = loadImage("assets/head/Layer 6.png");
+  video[6] = loadImage("assets/head/Layer 7.png");
+  video[7] = loadImage("assets/head/Layer 8.png");
+  video[8] = loadImage("assets/head/Layer 9.png");
+  video[9] = loadImage("assets/head/Layer 10.png");
+  video[10] = loadImage("assets/head/Layer 11.png");
+  video[11] = loadImage("assets/head/Layer 12.png");
+  video[12] = loadImage("assets/head/Layer 13.png");
+  video[13] = loadImage("assets/head/Layer 14.png");
+  video[14] = loadImage("assets/head/Layer 15.png");
+  video[15] = loadImage("assets/head/Layer 16.png");
+  video[16] = loadImage("assets/head/Layer 17.png");
+  video[17] = loadImage("assets/head/Layer 18.png");
+  video[18] = loadImage("assets/head/Layer 19.png");
+  video[19] = loadImage("assets/head/Layer 20.png");
+  video[20] = loadImage("assets/head/Layer 21.png");
+  video[21] = loadImage("assets/head/Layer 22.png");
+}
 
 function setup() {
-    let canvas = createCanvas((0.75*windowWidth), 0.75*windowHeight);
-  canvas.parent('sketch-container');
-  
-  
-
-  noiseDetail(8); 
+    let canvas = createCanvas((windowWidth), windowHeight);
+  canvas.position(0,0);
+  canvas.style("z-index", "-1");
+  //blendMode(OVERLAY)
+  //BLEND, DARKEST, LIGHTEST, DIFFERENCE, MULTIPLY, EXCLUSION, SCREEN, REPLACE, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN, ADD, REMOVE or SUBTRACT
+  background(255);
 }
 
 function draw() {
   background(255);
-  if (windowWidth < 600){
-    rad = 150;
-    textSize(20);
-    text_y = (height/2)-20;
-  }
-  else{
-    rad = 300;
-    textSize(50);
-    text_y = (height/2)-40;
-  }
-  fill(22, 222, 16);
-  push()
-  translate(width/2,height/2);
-  // oP
-  if (filled) {
-        noStroke();
-        fill(0);
-  } 
-  else {
-        noFill();
-        stroke(22, 222, 16);
-        strokeWeight(1);
-  }
-  nInt = map(mouseX, 0, width, 0.1, 0.1); // map mouseX to noise intensity
-  nAmp = map(mouseY, 0, height, 0.0, .1); // map mouseY to noise amplitude
-
-  beginShape();
-    for (let a=0; a<=TWO_PI; a+=TWO_PI/resolution) {
-        //nVal = map(noise(cos(a)*nInt+1, sin(a)*nInt+1, t ), 0.0, 1.0, nAmp, 1.0); // map noise value to match the amplitude
-        nVal = map(noise(cos(a)*nInt+1, sin(a)*nInt+1, t ), 0.0, 1.0, nAmp, 1.0); // map noise value to match the amplitude
-        xcir = cos(a)*rad *nVal;
-        ycir = sin(a)*rad *nVal;
-        vertex(xcir, ycir);
-        }
-  endShape(CLOSE);
-  t += tChange;
-  pop();
-  fill(139, 50, 168);
+ 
   
-  textFont("bilo");
-  strokeWeight(200)
-  textAlign(CENTER);
-  //rectMode(CENTER);
-  text_x = 53;
+
+  x = 450;
+  y = -50;
+  if (mouseX<windowWidth){
+    let t = map(mouseX, 0, windowWidth, 0, video.length);
     
-  text("Hi, I'm Lucia.",text_x, text_y, width-100, height);
+    frame = video[floor(t)]
+  }
+  else if (mouseX>windowWidth){
+    frame = video[21]
+  }
+  else if (mouseX<0){
+    frame = video[0]
+  }
+  push();
+  //blendMode(OVERLAY);
+  frame.resize(300, 400)
+  image(frame, x, y)
+  pop();
+
 }
 
 function windowResized(){
-  resizeCanvas((0.75*windowWidth), 0.75*windowHeight);
+  resizeCanvas((windowWidth), windowHeight);
   text_x = 50;
   text_y = (height/2)-50;
-}
-
-function myFunction(){
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "block"){
-    x.style.display = "none";
-    
-  } else{
-    x.style.display = "block"
-  }
 }
 
